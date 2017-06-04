@@ -10,11 +10,12 @@ import { ITechnicalSkill } from './app.model';
 
 @Component({
   selector: 'my-app',
-  template: `<h1> Skills </h1><br/> <div *ngFor="let item of items"> <br/>{{item.Name}} : {{item.LevelId}}</div>`
+  template: `<h1> Skills </h1><div *ngIf="isLoading">Loading..</div> <br/> <div *ngFor="let item of items"> <br/>{{item.Name}} : {{item.LevelId}}</div>`
 })
 
 export class AppComponent implements OnInit {
     public items: Array<ITechnicalSkill>;
+    public isLoading: boolean = true;
 
     constructor(private http: Http) {
        
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.GetAll()
-            .subscribe(data => this.items = data);
+            .subscribe(data => { this.items = data; this.isLoading = true });
     }
 
     public GetAll = (): Observable<Array<ITechnicalSkill>> => {
